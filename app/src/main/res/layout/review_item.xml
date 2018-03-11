@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/two_hundred_dp"
+    android:layout_marginLeft="@dimen/five_dp"
+    android:background="@android:color/white"
+    android:layout_marginRight="@dimen/five_dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_auther"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/eighteen_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Auther" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:lines="4"
+        android:textSize="@dimen/eighteen_dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_auther"
+        tools:text="Content" />
+</LinearLayout>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Movies App</string>
+    <string name="favourite">Favourite</string>
+    <string name="share">Share</string>
+    <string name="sort">Sort</string>
+    <string name="release_data">Release Data</string>
+    <string name="rating">Rating</string>
+    <string name="overview">Overview</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailers">Trailers</string>
+    <string name="movie_desc">that is movie content description</string>
+    <string name="not_connected">You are not connected to internet</string>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="five_dp">5dp</dimen>
+    <dimen name="two_hundred_dp">200dp</dimen>
+    <dimen name="eight_dp">8dp</dimen>
+    <dimen name="sixteen_dp">16dp</dimen>
+    <dimen name="eighteen_dp">18sp</dimen>
+    <dimen name="thirty_two_dp">32dp</dimen>
+    <dimen name="thumb_width">135dp</dimen>
+    <dimen name="thumb_height">168dp</dimen>
+    <dimen name="fifty_dp">50dp</dimen>
+    <dimen name="text_size">18sp</dimen>
+    <dimen name="twenty">24dp</dimen>
+    <dimen name="twenty_eight">28dp</dimen>
+    <dimen name="thirty_dp">30dp</dimen>
+    <dimen name="eighty_dp">80dp</dimen>
+    <dimen name="eighty_six">86dp</dimen>
+</resources>
