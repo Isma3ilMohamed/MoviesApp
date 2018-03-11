@@ -1,6 +1,8 @@
 # MoviesApp stage 2
-
-
+- fetch movies data from movies api using retrofit
+- store favourite movies on sqlite database using **Content Provider**
+- preview data by using **recycler view**
+- enable **picasso offline capabilites** to preview image when network is offline
 
 ## Usage Library
 
@@ -17,3 +19,6 @@
 
 
 - [Data Binding](https://developer.android.com/topic/libraries/data-binding/index.html)
+
+
+- [Collapse Action Bar](https://antonioleiva.com/collapsing-toolbar-layout/)
