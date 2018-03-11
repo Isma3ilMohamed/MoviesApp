@@ -1,11 +1,15 @@
 package com.udacity.moviesapp.ui;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -56,8 +60,6 @@ public class DetailActivity extends AppCompatActivity implements VideoAdapter.Mo
     //adapters for two recycler view
     VideoAdapter videoAdapter;
     ReviewAdapter reviewAdapter;
-
-
     /*
     * retrieve data from cursor
     * */
@@ -73,13 +75,31 @@ public class DetailActivity extends AppCompatActivity implements VideoAdapter.Mo
     List<MovieVideo.MovieVideos> videos;
     List<MovieReview.MovieReviews> reviews;
 
+    /*
+    *
+    * */
+    LinearLayoutManager trailer_layout_manager;
+    LinearLayoutManager reviews_layout_manager;
+
+    //declare Key for recycler views states
+    private final String trailersStateKey = "trailers_state";
+    private final String reviewsStateKey = "reviews_state";
+    //declare Parcelable to store recycler view state
+    private Parcelable trailersStateParcelable = null;
+    private Parcelable reviewsStateParcelable = null;
+    //declare bundle to store recycler view state key & parcelable
+    private static Bundle mBundleRecyclerViewState;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
-        mDetailBinding.rvTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mDetailBinding.rvReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        trailer_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        reviews_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mDetailBinding.rvTrailers.setLayoutManager(trailer_layout_manager);
+        mDetailBinding.rvReviews.setLayoutManager(reviews_layout_manager);
 
 
         //when details activty come from this  states (Top Rated | Most Popular)
@@ -384,8 +404,53 @@ public class DetailActivity extends AppCompatActivity implements VideoAdapter.Mo
     //handle movie video on click
     @Override
     public void onVideoClick(MovieVideo.MovieVideos movieVideos) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + movieVideos.getKey()));
-        startActivity(intent);
+        Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + movieVideos.getKey()));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.YOUTUBE_URL + movieVideos.getKey()));
+
+        //if youtube app not found video can open from browser
+        try {
+            startActivity(youtubeIntent);
+        } catch (ActivityNotFoundException e) {
+            startActivity(webIntent);
+        }
+
+    }
+
+    //handle orientation
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mBundleRecyclerViewState = new Bundle();
+
+        trailersStateParcelable = mDetailBinding.rvTrailers.getLayoutManager().onSaveInstanceState();
+        reviewsStateParcelable = mDetailBinding.rvReviews.getLayoutManager().onSaveInstanceState();
+
+        mBundleRecyclerViewState.putParcelable(trailersStateKey, trailersStateParcelable);
+        mBundleRecyclerViewState.putParcelable(reviewsStateKey, reviewsStateParcelable);
+    }
+
+    //return recycler view state
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (mBundleRecyclerViewState != null) {
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    trailersStateParcelable = mBundleRecyclerViewState.getParcelable(trailersStateKey);
+                    reviewsStateParcelable = mBundleRecyclerViewState.getParcelable(reviewsStateKey);
+                    mDetailBinding.rvTrailers.getLayoutManager().onRestoreInstanceState(trailersStateParcelable);
+                    mDetailBinding.rvReviews.getLayoutManager().onRestoreInstanceState(reviewsStateParcelable);
+
+                }
+            }, 50);
+        }
+
+        mDetailBinding.rvTrailers.setLayoutManager(trailer_layout_manager);
+        mDetailBinding.rvReviews.setLayoutManager(reviews_layout_manager);
 
     }
 }

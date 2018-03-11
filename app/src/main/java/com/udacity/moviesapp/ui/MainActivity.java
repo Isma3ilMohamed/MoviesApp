@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     private GridLayoutManager layoutManager;
     //declare Key for recyclerview state
     private final String recyclerStateKey = "recycler_state";
-
     //declare Parcelable to store recycler view state
     private Parcelable recyclerViewStateParcelable = null;
 
@@ -251,14 +250,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     }
 
 
-    /*
-    * now recycler view work with out add any configuration
-    * and when phone is rotation , recycler view created again and stop
-     * on previous scroll position
-     * but because save instane required
-     * add them when rotation
-     * add another cell to grid view
-    * */
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -276,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-            layoutManager.setSpanCount(3);
+            layoutManager.setSpanCount(2);
 
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
 
