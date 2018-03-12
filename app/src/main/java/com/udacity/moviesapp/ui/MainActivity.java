@@ -38,8 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieOnClickListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieOnClickListener {
 
     //DataBinding declare
     private ActivityMainBinding mMainBinding;
@@ -51,9 +50,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     private List<Movie.MovieDetail> details;
     //string var as key for movie detail object
     private static final String MOVIE_KEY = "key";
-
-    //boolean variable to switch between   states (Top Rated | Most Popular)
-    private static boolean isFromFavouriteList = false;
 
     //Declare Layout Manager for RV
     private GridLayoutManager layoutManager;
@@ -86,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         } else {
             Snackbar snackbar = Snackbar.make(mMainBinding.relative, getString(R.string.not_connected), Snackbar.LENGTH_SHORT);
             snackbar.show();
-            retrieveFavourite();
+            startActivity(new Intent(MainActivity.this, FavouriteActivity.class));
         }
     }
 
@@ -157,15 +153,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     }
 
     //to retrieve favourite movies from cursor
-    private void retrieveFavourite() {
 
-        getSupportLoaderManager().initLoader(0, null, MainActivity.this);
-        getSupportActionBar().setTitle("Favourite Movies");
-        adapter = new MoviesAdapter(this, this, null);
-        mMainBinding.rvMovies.setAdapter(adapter);
-        isFromFavouriteList = true;
-
-    }
 
 
     //handle movie on click
@@ -181,25 +169,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     //handle favourite on click
     @Override
     public void onFavouriteMovieClick(Cursor cursor, int Position) {
-        cursor.moveToPosition(Position);
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("id", cursor.getString
-                (cursor.getColumnIndex(MovieContract.MovieEntry._id)));
-        bundle.putString("poster", cursor.getString
-                (cursor.getColumnIndex(MovieContract.MovieEntry.POSTER_COLUMN)));
-        bundle.putString("rate", String.valueOf(cursor.getDouble
-                (cursor.getColumnIndex(MovieContract.MovieEntry.RATING_COLUMN))));
-        bundle.putString("title", cursor.getString
-                (cursor.getColumnIndex(MovieContract.MovieEntry.TITLE_COLUMN)));
-        bundle.putString("releaseData", cursor.getString
-                (cursor.getColumnIndex(MovieContract.MovieEntry.RELEASE_DATA_COLUMN)));
-        bundle.putString("overview", cursor.getString
-                (cursor.getColumnIndex(MovieContract.MovieEntry.OVERVIEW_COLUMN)));
-        bundle.putString("thumb", cursor.getString
-                (cursor.getColumnIndex(MovieContract.MovieEntry.THUMBNAIL_COLUMN)));
-        intent.putExtras(bundle);
-        startActivity(intent);
 
     }
 
@@ -229,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
                             retrieveMovies(0);
                         }
                     } else if (sort[which] == sort[2]) {
-                        retrieveFavourite();
+                        startActivity(new Intent(MainActivity.this, FavouriteActivity.class));
                     }
                 }
             });
@@ -278,32 +247,5 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         mMainBinding.rvMovies.setLayoutManager(layoutManager);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, MovieContract.MovieEntry.CONTENT_URI, null,
-                null, null, null);
-    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        if (data != null) {
-            adapter = new MoviesAdapter(this, this, data);
-            mMainBinding.rvMovies.setAdapter(adapter);
-        } else {
-            Snackbar snackbar = Snackbar.make(mMainBinding.relative, "Back to select your favourite movies", Snackbar.LENGTH_LONG)
-                    .setAction("Back", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            retrieveMovies(currentState);
-                        }
-                    });
-            snackbar.show();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
 }

@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".MoviesApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".MoviesApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -20,14 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.DetailActivity"
-            android:parentActivityName=".ui.MainActivity" />
+        <activity android:name=".ui.DetailActivity" />
+
 
         <provider
+            android:name=".data.MovieProvider"
             android:authorities="moviesapp.data.MovieProvider"
-            android:name="com.udacity.moviesapp.data.MovieProvider"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.FavouriteActivity"
+            android:parentActivityName=".ui.MainActivity" />
     </application>
 
 </manifest>

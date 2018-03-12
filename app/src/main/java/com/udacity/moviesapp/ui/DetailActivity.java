@@ -130,7 +130,6 @@ public class DetailActivity extends AppCompatActivity implements VideoAdapter.Mo
 
             setSupportActionBar(mDetailBinding.toolbarDetail);
             if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setTitle(movieDetail.getTitle());
             }
             Picasso.with(this)
